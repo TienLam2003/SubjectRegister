@@ -1,0 +1,141 @@
+﻿
+@{
+    ViewBag.Title = "Thêm môn học";
+    ViewBag.Active = "Subject";
+}
+
+@section Styles{
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-primary text-center p-2 rounded">Thêm môn học</h2>
+                <form id="add-form" class="form-sample" enctype="multipart/form-data">
+                    <p class="card-description"></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="SubjectCode" class="col-sm-3 col-form-label">Mã môn học:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="SubjectCode" class="form-control" name="SubjectCode" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="SubjectName" class="col-sm-3 col-form-label">Tên môn học:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="SubjectName" class="form-control" name="SubjectName" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="NumberOfCredits" class="col-sm-3 col-form-label">Số tín chỉ:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="NumberOfCredits" class="form-control" name="NumberOfCredits" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="SubjectType" class="col-sm-3 col-form-label">Loại môn học:</label>
+                                <div class="col-sm-9">
+                                    <select id="SubjectType" class="form-control" name="SubjectType">
+                                        <option value="true">Bắt buộc</option>
+                                        <option value="false">Tùy chọn</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="Department" class="col-sm-3 col-form-label">Khoa:</label>
+                                <div class="col-sm-9">
+                                    @await Component.InvokeAsync("Department")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="PrerequisiteCode" class="col-sm-3 col-form-label">Môn học tiên quyết:</label>
+                                <div class="col-sm-9">
+                                    <select id="ListPrerequisiteCode" name="ListPrerequisiteCode" class="js-example-responsive" multiple="multiple" style="width: 100%">
+                                        @* Môn học tiên quyết *@
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary mr-2">Thêm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            LoadSubjectByDepartmentCode();
+            });
+
+            //Khi khoa được chọn lại
+            $('#DepartmentCode').on('select2:select', function () {
+                LoadSubjectByDepartmentCode();
+            });
+
+            // Lấy môn học theo mã khoa
+            function LoadSubjectByDepartmentCode() {
+            let departmentCode = $('#DepartmentCode').val();
+                $.ajax({
+                    url: '/Subject/GetSubjectByDepartment',
+                    type: 'get',
+                    data: { departmentCode: departmentCode },
+                    //async: false,
+                    success: function (data) {
+                            $('#ListPrerequisiteCode').empty().select2({
+                            data: data,
+                            placeholder: "Không có", // Tiêu đề mặc định
+                            allowClear: true // Cho phép xóa giá trị đã chọn
+                        });
+                    }
+                });
+            }
+
+            //submit form
+            $('#add-form').on('submit', function (event) {
+                event.preventDefault(); // Ngăn không cho form load lại trang
+                var formData = new FormData(this); // Sử dụng FormData để bao gồm cả file
+
+                $.ajax({
+                    url: '@Url.Action("Add", "Subject")',
+                    type: 'POST',
+                    data: formData, // Lấy tất cả dữ liệu trong form
+                    processData: false, // Không xử lý dữ liệu, vì đây là FormData
+                    contentType: false, // Để mặc định header
+                    success: function (response) {
+                        if(response.result){
+                            $('#add-form').trigger('reset');
+                        }
+                        $('#modal-content').html(response.modal);
+                        // Tạo đối tượng modal và hiển thị
+                        var myModal = new bootstrap.Modal(document.getElementById('modal-content').querySelector('.modal'));
+                        myModal.show();
+                    },
+                    error: function (error) {
+                        alert('Đã xảy ra lỗi: ' + error.responseText);
+                    }
+                });
+            });
+    </script>
+}

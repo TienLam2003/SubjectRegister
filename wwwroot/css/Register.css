@@ -1,0 +1,53 @@
+﻿.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 200px;
+}
+
+.icon {
+    font-size: 50px;
+    color: #ff0000;
+    animation: pulse 1.5s infinite;
+}
+
+.text {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ff0000;
+    animation: fadeIn 2s infinite;
+}
+
+.register {
+    color: red;
+}
+
+    .register:hover {
+        cursor: pointer;
+    }
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

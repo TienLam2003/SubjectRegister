@@ -1,0 +1,69 @@
+﻿@using SubjectRegister.ViewModels
+@model List<StudentListPdfViewModel>
+
+@{
+    ViewBag.Title = "Danh sách sinh viên";
+    ViewBag.Active = "ClassSection";
+    var classInfo = Model.FirstOrDefault();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Table.css" />
+    <link rel="stylesheet" href="~/css/Register.css" />
+}
+
+<div class="row">
+    <div class="col-12 grid-margin">
+        <h2 class="text-primary text-center p-2 rounded">Danh sách sinh viên</h2>
+        <div class="info-section">
+            <p><strong>Giảng viên giảng dạy:</strong> @classInfo.TeacherName</p>
+            <p><strong>Môn học:</strong> @classInfo.SubjectName</p>
+            <p><strong>Lịch học trong tuần:</strong> @classInfo.StudySchedule</p>
+            <p><strong>Số lượng sinh viên:</strong> @Model.Count</p>
+        </div>
+        <a id="upLoadFile" data-toggle="dropdown" aria-expanded="false" class="btn btn-success p-3 my-2 float-right dropdown-toggle">
+            <i class="mdi mdi-upload btn-icon-prepend"></i> Tải file
+        </a>
+        <div class="dropdown-menu navbar-dropdown" aria-labelledby="upLoadFile">
+            <a href="@Url.Action("ExportPdf", "ClassSection", new { classCode = ViewBag.ClassCode })" class="dropdown-item item-hidden">
+                <i class="mdi mdi-account-card-details mr-3 text-info"></i> Xuất file pdf
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="@Url.Action("ExportFile", "ClassSection", new { classCode = ViewBag.ClassCode })" class="dropdown-item item-hidden">
+                <i class="mdi mdi-selection mr-3 text-success"></i> Xuất file excel
+            </a>
+        </div>
+        <div id="content">
+            <div class="card h-100 w-100">
+                <div class="table-responsive table-scroll">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Mã sinh viên</th>
+                                <th>Họ tên</th>
+                                <th>Lớp</th>
+                                <th>Năm sinh</th>
+                                <th>Giới tính</th>
+                                <th>SĐT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="detail" data-user-id="@item.StudentCode">
+                                    <td class="show-modal" data-id="@item.StudentCode">@item.StudentCode</td>
+                                    <td class="edit-column">@item.Fullname</td>
+                                    <td class="edit-column">@item.Class</td>
+                                    <td class="edit-column">@item.YearOfBirth.ToShortDateString()</td>
+                                    <td class="edit-column">@item.GenderStr</td>
+                                    <td class="edit-column">@item.Phone</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

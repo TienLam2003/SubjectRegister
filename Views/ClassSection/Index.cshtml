@@ -1,0 +1,85 @@
+﻿
+@{
+    ViewBag.Title = "Mở lớp học";
+    ViewBag.Active = "ClassSection";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Table.css" />
+    <link rel="stylesheet" href="~/css/Register.css" />
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12 grid-margin">
+        <a href="@Url.Action("Add", "ClassSection")" class="btn btn-info p-3 my-2 mr-3">Thêm</a>
+        <a class="btn btn-success p-3 my-2 float-right" data-toggle="modal" data-target="#UpdateTime">
+            Chỉnh sửa thời gian đăng ký lớp học
+        </a>
+        <div style="margin: 10px 0">
+            <span style="font-size: 20px; font-family: auto;">
+                Thời gian đăng ký lớp học bắt đầu ngày
+                <strong> @RegisterScheduleModelStatic.RegisterStart?.ToShortDateString() </strong>
+                và kết thúc ngày
+                <strong> @RegisterScheduleModelStatic.RegisterDeadline?.ToShortDateString() </strong>
+            </span>
+        </div>
+        <div id="content">
+            @*Dữ liệu được thêm vào đây*@
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="UpdateTime" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="@Url.Action("UpdateTime", "ClassSection")" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAvatarModalLabel">Chỉnh sửa thời gian mở lập kế hoạch</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="RegisterStart">Thời gian mở:</label>
+                        <input type="date" class="form-control" name="RegisterStart" id="RegisterStart" value="@RegisterScheduleModelStatic.RegisterStart?.ToString("yyyy-MM-dd")" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="RegisterDeadline">Thời gian kết thúc:</label>
+                        <input type="date" class="form-control" name="RegisterDeadline" id="RegisterDeadline" value="@RegisterScheduleModelStatic.RegisterDeadline?.ToString("yyyy-MM-dd")" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* Modal xác nhận xóa trong bảng *@
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="editAvatarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirm">Xác nhận xóa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc muốn xóa mã <strong id="code"></strong></p>
+            </div>
+            <div class="modal-footer">
+                <a id="linkDelete" href="#" class="btn btn-gradient-danger" data-dismiss="modal">Xóa</a>
+                <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/ClassSection.js"></script>
+}

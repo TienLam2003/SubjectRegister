@@ -1,0 +1,9 @@
+﻿
+<select id="DepartmentCode" name="DepartmentCode" class="js-example-responsive" style="width: 100%; margin: 10px">
+    @foreach (var item in ViewBag.Data)
+    {
+        <option value="@item.DepartmentCode" selected="@(item.DepartmentCode == ViewBag.DepartmentCode ? "selected" : null)">
+            @item.DepartmentName
+        </option>
+    }
+</select>

@@ -1,0 +1,30 @@
+﻿@model SubjectRegister.Common.QueryResultModel
+
+<div class="modal" id="myModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông báo</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    @Model.message
+                    @if (!Model.result)
+                    {
+                        <i class="fas fa-times-circle" style="color: red;"></i>
+                    }
+                    else
+                    {
+                        <i class="fas fa-check-circle" style="color: green;"></i>
+                    }
+                </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-gradient-dark btn-fw" fdprocessedid="jqsfo" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>

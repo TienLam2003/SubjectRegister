@@ -1,0 +1,192 @@
+﻿@{
+    ViewBag.Title = "Mở lớp học";
+    ViewBag.Active = "ClassSection";
+}
+
+@section Styles{
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-primary text-center p-2 rounded">Mở lớp học</h2>
+                <form id="add-form" class="form-sample">
+                    <p class="card-description"></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="SemesterCode" class="col-sm-3 col-form-label">Học kỳ:</label>
+                                <div class="col-sm-9">
+                                    <select id="SemesterCode" name="SemesterCode" class="js-example-responsive" style="width: 100%; margin: 10px">
+                                        @foreach (var item in ViewBag.Semester)
+                                        {
+                                            <option value="@item.SemesterCode">@item.SemesterName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="SubjectCode" class="col-sm-3 col-form-label">Tên môn học:</label>
+                                <div class="col-sm-9">
+                                    <select id="SubjectCode" name="SubjectCode" class="js-example-responsive" style="width: 100%; margin: 10px">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="TeacherCode" class="col-sm-3 col-form-label">Giảng viên giảng dạy:</label>
+                                <div class="col-sm-9">
+                                    <select id="TeacherCode" name="TeacherCode" class="js-example-responsive" style="width: 100%; margin: 10px">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="MaxQuantity" class="col-sm-3 col-form-label">Số lượng sinh viên tối đa:</label>
+                                <div class="col-sm-9">
+                                    <input type="number" id="MaxQuantity" name="MaxQuantity" class="form-control"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="ListSchedule" class="col-sm-3 col-form-label">Lịch học trong tuần:</label>
+                                <div class="col-sm-9">
+                                    <select id="ListSchedule" name="ListSchedule" class="js-example-responsive" multiple="multiple" style="width: 100%; margin: 10px">
+                                        <option value="20">Thứ 2 Buổi sáng</option>
+                                        <option value="21">Thứ 2 Buổi chiều</option>
+                                        <option value="30">Thứ 3 Buổi sáng</option>
+                                        <option value="31">Thứ 3 Buổi chiều</option>
+                                        <option value="40">Thứ 4 Buổi sáng</option>
+                                        <option value="41">Thứ 4 Buổi chiều</option>
+                                        <option value="50">Thứ 5 Buổi sáng</option>
+                                        <option value="51">Thứ 5 Buổi chiều</option>
+                                        <option value="60">Thứ 6 Buổi sáng</option>
+                                        <option value="61">Thứ 6 Buổi chiều</option>
+                                        <option value="70">Thứ 7 Buổi sáng</option>
+                                        <option value="71">Thứ 7 Buổi chiều</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="ClassroomCode" class="col-sm-3 col-form-label">Phòng học: (Có thể để trống)</label>
+                                <div class="col-sm-9">
+                                    <select id="ClassroomCode" name="ClassroomCode" class="js-example-responsive" style="width: 100%; margin: 10px">
+                                        <option value="">Chọn phòng học</option>
+                                        @foreach (var item in ViewBag.Classroom)
+                                        {
+                                            <option value="@item.ClassroomCode">@item.ClassroomCode</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary mr-2">Thêm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#SubjectCode').select2();
+            $('#SemesterCode').select2();
+            $('#TeacherCode').select2();
+            $('#ListSchedule').select2();
+            $('#ClassroomCode').select2();
+            GetDepartmentsWithSubjects();
+            GetTeacherBySubject();
+
+            $('#SemesterCode').on('change', function () {
+                GetDepartmentsWithSubjects();
+            });
+
+            $('#SubjectCode').on('change', function () {
+                GetTeacherBySubject();
+            });
+
+            //Load khoa và môn học thuộc khoa trong bảng kế hoạch
+            function GetDepartmentsWithSubjects() {
+                let semesterCode = $('#SemesterCode').val();
+                $.ajax({
+                    url: '/ClassSection/GetDepartmentsWithSubjects',
+                    data: {semesterCode},
+                    method: 'GET',
+                    cache: false,
+                    async: false,
+                    success: function (data) {
+                        $('#SubjectCode').empty();
+                        // Khởi tạo Select2 với dữ liệu trả về
+                        $('#SubjectCode').select2({
+                            data: data,
+                            placeholder: "Chọn môn học"
+                        });
+                    },
+                    error: function () {
+                        alert('Không thể tải dữ liệu');
+                    }
+                });
+            }
+
+            //Load giảng viên theo môn học
+            function GetTeacherBySubject() {
+                let subjectCode = $('#SubjectCode').val();
+                $.ajax({
+                    url: '/ClassSection/GetTeacherBySubject',
+                    data: { subjectCode },
+                    method: 'GET',
+                    cache: false,
+                    success: function (data) {
+                        $('#TeacherCode').empty();
+                        // Khởi tạo Select2 với dữ liệu trả về
+                        $('#TeacherCode').select2({
+                            data: data
+                        });
+                    },
+                    error: function () {
+                        alert('Không thể tải dữ liệu');
+                    }
+                });
+            }
+
+            $('#add-form').on('submit', function (event) {
+                event.preventDefault(); // Ngăn không cho form load lại trang
+                var formData = new FormData(this); // Sử dụng FormData để bao gồm cả file
+
+                $.ajax({
+                    url: '@Url.Action("Add", "ClassSection")',
+                    type: 'POST',
+                    data: formData, // Lấy tất cả dữ liệu trong form
+                    processData: false, // Bắt buộc phải đặt false khi sử dụng FormData
+                    contentType: false, // Đặt false để sử dụng mặc định của FormData
+                    success: function (response) {
+                        if (response.result) {
+                            //$('#add-form').trigger('reset');
+                        }
+                        $('#modal-content').html(response.modal);
+                        // Tạo đối tượng modal và hiển thị
+                        var myModal = new bootstrap.Modal(document.getElementById('modal-content').querySelector('.modal'));
+                        myModal.show();
+                    }
+                });
+            });
+        });
+    </script>
+}

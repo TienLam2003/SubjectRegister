@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Đăng ký lớp học phần";
+    ViewBag.Active = "RegisterClass";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Table.css" />
+    <link rel="stylesheet" href="~/css/Register.css" />
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12 grid-margin">
+        <h2 class="text-primary text-center p-2 rounded">Đăng ký lớp học phần</h2>
+        <div style="margin: 10px 0">
+            <span style="font-size: 20px; font-family: auto;">
+                <strong>Lưu ý:</strong> Mỗi sinh viên chỉ được đăng ký một lớp duy nhất cho một môn học
+            </span>
+        </div>
+        <div id="content">
+            @*Dữ liệu được thêm vào đây*@
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        GetData();
+        $(document).ready(function () {
+            AddRegister();
+        });
+
+        function GetData() {
+            $.ajax({
+                url: '/RegisterClass/GetClassByStudent',
+                type: 'GET',
+                cache: false,
+                success: function (data) {
+                    $('#content').html(data);
+                }
+            });
+        }
+
+        function AddRegister(){
+            $(document).on('click', '.register', function () {
+                    let classCode = $(this).data('class-code');
+
+                    $.ajax({
+                    url: '/RegisterClass/AddRegister',
+                    type: 'POST',
+                    data: {classCode},
+                    cache: false,
+                    success: function (response) {
+                        console.log(response);
+                        $('#modal-content').html(response);
+                        // Tạo đối tượng modal và hiển thị
+                        var myModal = new bootstrap.Modal(document.getElementById('modal-content').querySelector('.modal'));
+                        myModal.show();
+                    }
+                });
+            });
+        }
+    </script>
+}

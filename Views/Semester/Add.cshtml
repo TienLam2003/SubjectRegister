@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Thêm học kỳ";
+    ViewBag.Active = "Semester";
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-primary text-center p-2 rounded">Thêm học kỳ</h2>
+                <form id="add-form" method="post" class="form-sample">
+                    <p class="card-description"></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="SemesterName" class="col-sm-3 col-form-label">Tên học kỳ:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="SemesterName" class="form-control" name="SemesterName" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="StartTime" class="col-sm-3 col-form-label">Thời gian bắt đầu:</label>
+                                <div class="col-sm-9">
+                                    <input type="date" id="StartTime" class="form-control" name="StartTime" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="EndTime" class="col-sm-3 col-form-label">Thời gian kết thúc:</label>
+                                <div class="col-sm-9">
+                                    <input type="date" id="EndTime" class="form-control" name="EndTime" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary mr-2">Thêm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#add-form').on('submit', function (event) {
+                event.preventDefault(); // Ngăn không cho form load lại trang
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '@Url.Action("Add", "Semester")',
+                    type: 'POST',
+                    data: formData, // Lấy tất cả dữ liệu trong form
+                    processData: false, // Ngăn jQuery xử lý dữ liệu (cần thiết khi dùng FormData)
+                    contentType: false, // Không đặt Content-Type để trình duyệt tự xử lý
+                    success: function (response) {
+                        if(response.result){
+                            $('#add-form').trigger('reset');
+                        }
+                        $('#modal-content').html(response.modal);
+                        // Tạo đối tượng modal và hiển thị
+                        var myModal = new bootstrap.Modal(document.getElementById('modal-content').querySelector('.modal'));
+                        myModal.show();
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -1,0 +1,106 @@
+﻿
+@{
+    Layout = null;
+    bool isLogin = @ViewBag.Auth ?? true;
+    var modalModel = new SubjectRegister.Common.ModalModifyModel
+    {
+         ModalId = "errorModal",
+         ModalContent = "Thông tin tài khoản hoặc mật khẩu không chính xác"
+    };
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Đăng nhập</title>
+    <link rel="stylesheet" href="~/css/CustomTemplate/css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css">
+</head>
+<body>
+    <!-- Modal -->
+    @await Component.InvokeAsync("ModalModify", modalModel)
+
+    <div class="container-scroller">
+        <div class="container-fluid page-body-wrapper full-page-wrapper">
+            <div class="content-wrapper d-flex align-items-center auth">
+                <div class="row flex-grow">
+                    <div class="col-lg-4 mx-auto">
+                        <div class="auth-form-light text-left p-5">
+                            <div class="brand-logo">
+                                <img src="/images/logo-blu-max.png">
+                            </div>
+                            <h4></h4>
+                            <h6 class="font-weight-light">Website đăng ký môn học theo hệ thống tín chỉ của trường Đại học Bạc Liêu</h6>
+                            <form id="form-login" class="pt-3" action="@Url.Action("Auth", "Login")" method="post">
+                                <div class="form-group">
+                                    <input type="email" class="form-control form-control-lg" id="Username" name="Username" placeholder="Username">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control form-control-lg" id="Password" name="Password" placeholder="Password">
+                                </div>
+                                <div class="mt-3">
+                                    @*<a class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">Đăng nhập</a>*@
+                                    <button type="button" id="btn-login" class="btn btn-block btn-gradient-primary btn-lg font-weight-medium auth-form-btn">Đăng nhập</button>
+                                </div>
+                                <div class="my-2 d-flex justify-content-between align-items-center">
+                                    <div class="form-check">
+                                        <label class="form-check-label text-muted">
+                                            <input type="checkbox" class="form-check-input">
+                                        </label>
+                                    </div>
+                                    <a href="#" class="auth-link text-black">Quên mật khẩu?</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js"></script>
+    <script>
+        if ("@isLogin" == "False") {
+            $('#errorModal').modal('show');
+        }
+
+        $(function () {
+            $("#btn-login").on('click', function () {
+                let username = $("#Username").val();
+                let password = $("#Password").val();
+                if (username == "") {
+                    alert("Vui lòng nhập tài khoản");
+                }
+                else if (password == "") {
+                    alert("Vui lòng nhập mật khẩu");
+                }
+                else {
+                    let formData = {
+                        Username: username,
+                        Password: password
+                    };
+
+                    $.ajax({
+                        url: '/Login/Auth',
+                        type: 'POST',
+                        data: formData,
+                        success: function (response) {
+                            if (response.success) {
+                                window.location.href = '/Home/Index';
+                            } else {
+                                $('#errorModal').modal('show');
+                            }
+                        },
+                        error: function () {
+                            alert('Có lỗi xảy ra. Vui lòng thử lại.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

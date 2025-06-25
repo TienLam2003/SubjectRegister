@@ -1,0 +1,11 @@
+# ASP.NET Core
+bin/
+obj/
+*.user
+*.suo
+*.dbmdl
+*.log
+*.vs/
+*.vscode/
+secrets.json
+.env

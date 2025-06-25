@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "Môn học dự kiến";
+    ViewBag.Active = "PlannedSubject";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Table.css" />
+    <link rel="stylesheet" href="~/css/Register.css" />
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12 grid-margin">
+        <a href="@Url.Action("Add", "PlannedSubject")" class="btn btn-info p-3 my-2 mr-3">Thêm</a>
+        <a class="btn btn-success p-3 my-2 float-right" data-toggle="modal" data-target="#UpdateTime">
+            Chỉnh sửa thời gian mở lập kế hoạch
+        </a>
+        <div style="margin: 10px 0">
+            <span style="font-size: 20px; font-family: auto;">
+                <strong>Lưu ý:</strong> Thời gian lập kế hoạch bắt đầu ngày
+                <strong>@PlanScheduleModelStatic.PlanStart?.ToShortDateString()</strong>
+                và kết thúc ngày
+                <strong>@PlanScheduleModelStatic.PlanDeadline?.ToShortDateString()</strong>
+                sinh viên không lập kế hoạch sẽ không được đăng ký lớp học phần
+            </span>
+        </div>
+        <div id="content">
+            @*Dữ liệu được thêm vào đây*@
+        </div>
+    </div>
+</div>
+
+@* Modal xác nhận xóa User trong bảng *@
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="editAvatarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirm">Xác nhận xóa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc muốn xóa mã <strong id="code"></strong></p>
+            </div>
+            <div class="modal-footer">
+                <a id="linkDelete" href="#" class="btn btn-gradient-danger" data-dismiss="modal">Xóa</a>
+                <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="UpdateTime" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="@Url.Action("UpdateTime", "PlannedSubject")" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAvatarModalLabel">Chỉnh sửa thời gian mở lập kế hoạch</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="PlanStart">Thời gian mở:</label>
+                        <input type="date" class="form-control" name="PlanStart" id="PlanStart" value="@PlanScheduleModelStatic.PlanStart?.ToString("yyyy-MM-dd")" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="PlanDeadline">Thời gian kết thúc:</label>
+                        <input type="date" class="form-control" name="PlanDeadline" id="PlanDeadline" value="@PlanScheduleModelStatic.PlanDeadline?.ToString("yyyy-MM-dd")" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/PlannedSubject.js"></script>
+}

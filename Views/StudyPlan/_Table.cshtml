@@ -1,0 +1,43 @@
+﻿@using SubjectRegister.Common;
+@model List<StudyPlanModel>
+
+<div class="card">
+    <div class="table-responsive table-scroll">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Môn học</th>
+                    <th>Số tín chỉ</th>
+                    <th>Học kỳ</th>
+                    <th>Thời gian đăng ký</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="detail">
+                        <td class="edit-column">@item.SubjectName</td>
+                        <td class="edit-column">@item.NumberOfCredits</td>
+                        <td class="edit-column">@item.SemesterName</td>
+                        <td class="edit-column">@item.RegisterDate.ToShortDateString()</td>
+                        <td>
+                            <a class="nav-link p-0" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                                <i class="mdi mdi-dots-vertical mdi-24px"></i> <!-- Icon ba chấm dọc -->
+                            </a>
+                            <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+                                <a class="dropdown-item item-hidden" href="@Url.Action("Update", "PlannedSubject", new {code = item.PlannedCode})">
+                                    <i class="mdi mdi-account-card-details mr-3 text-info"></i> Sửa
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item item-hidden showModalDeleteConfirm" href="#" data-code="@item.PlannedCode">
+                                    <i class="mdi mdi-logout mr-3 text-danger"></i> Xóa
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

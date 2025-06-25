@@ -1,0 +1,168 @@
+﻿@* @model StudentModel
+
+@{
+    ViewBag.Title = "Chỉnh sửa thông tin cá nhân";
+    ViewBag.ScreenName = "Thông tin cá nhân";
+    ViewBag.Icon = "mdi menu-icon mdi-account-circle";
+}
+
+<style>
+    .avatar {
+        object-fit: cover;
+        width: 8rem;
+        height: 8rem;
+        transition: transform 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .edit-icon {
+        cursor: pointer;
+    }
+
+    .avatar-overlay:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+
+    .right {
+        float: right;
+    }
+
+    .form-edit {
+        background-color: aliceblue;
+        border-radius: 8px;
+    }
+
+    .form-group {
+        padding: 2%;
+        border-radius: 8px;
+        background-color: #ffffff;
+    }
+</style>
+
+<div class="row justify-content-center">
+    <div class="col-md-5 form-edit">
+        <div class="container">
+            <div class="form-avatar text-center m-3">
+                <img src="@Model.ImagePath" alt="" class="avatar rounded-circle" data-toggle="modal" data-target="#avatarModal">
+                <div class="edit-icon mt-2" data-toggle="modal" data-target="#editAvatarModal">
+                    <i class="mdi text-success mdi-lead-pencil"></i> Chỉnh sửa ảnh đại diện
+                </div>
+            </div>
+            <div class="form-group" data-toggle="modal" data-target="#editFullnameModal">
+                <span class="left">@Model.RoleName</span>
+                <span class="right">@Model.FullName</span>
+            </div>
+            <div class="form-group" data-toggle="modal" data-target="#editUsernameModal">
+                <span class="left">Tài khoản</span>
+                <span class="right">@Model.Username</span>
+            </div>
+            <div class="form-group edit d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#editPasswordModal">
+                <span>Mật khẩu</span>
+                <div class="d-flex justify-content-center align-items-center">
+                <i class="mdi text-success mdi-lead-pencil"></i>
+            </div>
+                <div class="right">
+                    <span class="">************</span>
+                    <i class="mdi text-success mdi-chevron-right"></i>
+                </div>
+            </div>
+            <div class="form-group edit d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#editYearOfBirth">
+                <span>Năm sinh</span>
+                <div class="right">
+                    <span>@Model.YearOfBirth.ToString("dd/MM/yyyy")</span>
+                    <i class="mdi text-success mdi-chevron-right"></i>
+                </div>
+            </div>
+            <div class="form-group edit d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#editPasswordModal">
+                <span>Giới tính</span>
+                <div class="right">
+                    <span>@((Model.Gender ? "Nam" : "Nữ"))</span>
+                    <i class="mdi text-success mdi-chevron-right"></i>
+                </div>
+            </div>
+            <div class="form-group edit d-flex align-items-center justify-content-between" data-toggle="modal" data-target="#editPasswordModal">
+                <span>Số điện thoại</span>
+                <div class="right">
+                    <span>@Model.Phone</span>
+                    <i class="mdi text-success mdi-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for editing Avatar -->
+<div class="modal fade" id="editAvatarModal" tabindex="-1" role="dialog" aria-labelledby="editAvatarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/Auth/AvatarUpdate" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAvatarModalLabel">Chỉnh sửa ảnh đại diện</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Avatar">Chọn ảnh đại diện:</label>
+                        <input type="file" name="ImagesPath" class="form-control" accept="image/*" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for editing Password -->
+<div class="modal fade" id="editPasswordModal" tabindex="-1" role="dialog" aria-labelledby="editPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/Auth/PasswordUpdate" method="post">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editPasswordModalLabel">Chỉnh sửa mật khẩu</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Password">Mật khẩu:</label>
+                        <input type="password" name="Password" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for editing YearOfBirh -->
+<div class="modal fade" id="editYearOfBirth" tabindex="-1" role="dialog" aria-labelledby="editPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="/Auth/YearOfBirhUpdate" method="post">
+                <div class="modal-header">
+                    <h5>Chỉnh sửa năm sinh</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="Password">Mật khẩu:</label>
+                        <input type="password" name="Password" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div> *@

@@ -1,0 +1,34 @@
+﻿@model List<RegisterClassModel>
+@{
+    //var studentCode = Context.Session.Get("Code");
+}
+
+<div class="card">
+    <div class="table-responsive table-scroll">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Môn học</th>
+                    <th>Giảng viên giảng dạy</th>
+                    <th>Thời gian học</th>
+                    <th>Phòng học</th>
+                    <th>Số lượng sinh viên</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="detail">
+                        <td class="edit-column">@item.SubjectName</td>
+                        <td class="edit-column">@item.TeacherName</td>
+                        <td class="edit-column">@(item.ClassCode != null ? item.StudySchedule : "")</td>
+                        <td class="edit-column">@(item.ClassroomName ?? "Chưa cụ thể")</td>
+                        <td class="edit-column">@item.MaxQuantity</td>
+                        <td class="edit-column"><span data-class-code="@item.ClassCode" class="register">Đăng ký</span></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

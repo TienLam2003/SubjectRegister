@@ -1,0 +1,34 @@
+﻿/* Đặt màu nền của modal */
+.modal-content {
+    background-color: #ffffff; /* Màu trắng */
+    border-radius: 8px; /* Bo góc cho modal */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Đổ bóng nhẹ */
+}
+
+/* Tạo đường gạch phân biệt giữa các phần */
+.modal-header,
+.modal-footer {
+    border-bottom: 1px solid #ddd; /* Đường gạch dưới ở header */
+}
+
+.modal-footer {
+    border-top: 1px solid #ddd; /* Đường gạch trên ở footer */
+}
+
+/* Căn chỉnh tiêu đề và biểu tượng đóng */
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #333; /* Màu chữ tiêu đề */
+}
+
+.modal-header .close{
+    color: #b90a0a !important; /* Màu nút đóng và nút trong footer */
+}
+
+/* Tùy chỉnh nút đóng để nó nổi bật hơn */
+.modal-header .close {
+    font-size: 2.2rem;
+    padding: 1.3rem;
+    margin-right: -0.8rem;
+}

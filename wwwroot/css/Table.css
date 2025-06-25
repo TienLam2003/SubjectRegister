@@ -1,0 +1,79 @@
+﻿.img-avatar-fomat {
+    object-fit: cover;
+}
+
+.form-control{
+    border-radius: 30px;
+}
+
+#loading {
+    text-align: center;
+    margin: 30px;
+}
+
+#loading-icon {
+    width: 30px; 
+    height: 30px;
+}
+
+th {
+    background-color: #00008B;
+    color: white;
+    padding: 12px 15px;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 2px solid #ddd;
+}
+tr {
+    border-bottom: 1px solid #ddd; 
+}
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2; 
+    }
+
+    tr:hover {
+        background-color: #f1f1f1; 
+    }
+
+td {
+    /*padding: 10px 15px;*/ 
+    /*border-bottom: 1px solid #ddd;*/ 
+    text-align: center;
+}
+
+/*css cho phân trang*/
+.pagination a {
+    color: var(--bs-dark);
+    padding: 10px 16px;
+    text-decoration: none;
+    transition: 0.5s;
+    border: 1px solid #569AF5;
+    margin: 0 4px;
+    background-color: white;
+    border-radius: 8px;
+}
+
+    .pagination a.page-active {
+        background-color: #21B1FF;
+        color:white;
+    }
+
+.page-number:hover{
+    cursor: pointer;
+}
+
+.dropdown-item{
+    padding: 11px 13px !important;
+}
+
+.table-scroll {
+    max-height: 80vh; /* Chiều cao tối đa */
+    overflow-y: auto; /* Thanh cuộn dọc */
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1; /* Đảm bảo tiêu đề luôn hiển thị trên nội dung khi cuộn */
+}

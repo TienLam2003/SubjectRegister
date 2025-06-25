@@ -1,0 +1,127 @@
+﻿
+@{
+    ViewBag.Title = "Thêm sinh viên";
+    ViewBag.Active = "Student";
+}
+
+@section Styles{
+
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-primary text-center p-2 rounded">Thêm sinh viên</h2>
+                <form id="add-form" method="post" class="form-sample" enctype="multipart/form-data">
+                    <p class="card-description"></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="StudentCode" class="col-sm-3 col-form-label">Mã sinh viên:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="StudentCode" class="form-control" name="StudentCode" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="Fullname" class="col-sm-3 col-form-label">Họ tên:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="Fullname" class="form-control" name="Fullname" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="class" class="col-sm-3 col-form-label">Lớp:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="class" class="form-control" name="Class" required />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="YearOfBirth" class="col-sm-3 col-form-label">Ngày sinh:</label>
+                                <div class="col-sm-9">
+                                    <input type="date" id="YearOfBirth" class="form-control" name="YearOfBirth" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="Gender" class="col-sm-3 col-form-label">Giới tính:</label>
+                                <div class="col-sm-9">
+                                    <select id="Gender" class="form-control" name="Gender">
+                                        <option value="true">Nam</option>
+                                        <option value="false">Nữ</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="Phone" class="col-sm-3 col-form-label">Số điện thoại <span class="text-danger">*</span></label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="Phone" class="form-control" name="Phone" required />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="Department" class="col-sm-3 col-form-label">Khoa:</label>
+                                <div class="col-sm-9">
+                                    @await Component.InvokeAsync("Department")
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="ImageFile" class="col-sm-3 col-form-label">Ảnh đại diện:</label>
+                                <div class="col-sm-9">
+                                    <input type="file" id="ImageFile" name="ImageFile" class="form-control" accept="image/*" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary mr-2">Thêm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+            $('#add-form').on('submit', function (event) {
+                event.preventDefault(); // Ngăn không cho form load lại trang
+                var formData = new FormData(this); // Sử dụng FormData để bao gồm cả file
+
+                $.ajax({
+                    url: '@Url.Action("Add", "Student")',
+                    type: 'POST',
+                    data: formData, // Lấy tất cả dữ liệu trong form
+                    processData: false, // Ngăn jQuery xử lý dữ liệu (cần thiết khi dùng FormData)
+                    contentType: false, // Không đặt Content-Type để trình duyệt tự xử lý
+                    success: function (response) {
+                        if(response.result){
+                            $('#add-form').trigger('reset');
+                        }
+                        $('#modal-content').html(response.modal);
+                        // Tạo đối tượng modal và hiển thị
+                        var myModal = new bootstrap.Modal(document.getElementById('modal-content').querySelector('.modal'));
+                        myModal.show();
+                    }
+                });
+            });
+        });
+    </script>
+}

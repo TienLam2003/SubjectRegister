@@ -1,0 +1,118 @@
+﻿@{
+    ViewBag.Title = "Quản lý sinh viên";
+    ViewBag.Active = "Student";
+}
+
+@section Styles {
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/solid.min.css" rel="stylesheet">
+    <!-- Font Awesome CSS cho toàn bộ bộ icon -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/fontawesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/Table.css" />
+    <link rel="stylesheet" href="~/css/Register.css" />
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12 grid-margin">
+        <div class="row justify-content-center">
+            <div class="col-4 p-1">
+                <input class="form-control" type="text" id="StudentCode" name="StudentCode" placeholder="Nhập mã" />
+            </div>
+            <div class="col-4 p-1">
+                @Html.TextBox("Fullname", null, new { @class = "form-control", @placeholder = "Nhập tên" })
+                @*<input class="form-control" type="text" id="search-name" name="FullName" />*@
+            </div>
+            <button class="btn btn-gradient-info btn-rounded btn-icon mt-2 ml-2" id="search"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+        <a href="@Url.Action("Add", "Student")" class="btn btn-info p-3 my-2 mr-3">Thêm</a>
+        @* <a id="upLoadFile" data-toggle="dropdown" aria-expanded="false" class="btn btn-success p-3 my-2 float-right dropdown-toggle">
+            <i class="mdi mdi-upload btn-icon-prepend"></i> Tải file
+        </a>
+        <div class="dropdown-menu navbar-dropdown" aria-labelledby="upLoadFile">
+            <a href="#" class="dropdown-item item-hidden" data-toggle="modal" data-target="#ReadFile">
+                <i class="mdi mdi-account-card-details mr-3 text-info"></i> Đọc dữ liệu từ file
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item item-hidden" data-toggle="modal" data-target="#avatarModal">
+                <i class="mdi mdi-selection mr-3 text-success"></i> Xuất file excel
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item item-hidden" data-toggle="modal" data-target="#ReadFile">
+                <i class="mdi mdi-logout mr-3 text-danger"></i> Lấy file mẫu
+            </a>
+        </div> *@
+        <div id="content">
+            @*Dữ liệu được thêm vào đây*@
+        </div>
+    </div>
+</div>
+
+@*Modal đọc file*@
+<div class="modal fade" id="ReadFile" tabindex="-1" role="dialog" aria-labelledby="editAvatarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form action="@Url.Action("ReadFile", "Student")" method="post" enctype="multipart/form-data">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAvatarModalLabel">Thêm dữ liệu từ file Excel</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="excelFile">Chọn file Excel:</label>
+                        <input type="file" name="ExcelFile" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@* Modal xác nhận xóa User trong bảng *@
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="editAvatarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirm">Xác nhận xóa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc muốn xóa sinh viên có mã <strong id="code"></strong></p>
+            </div>
+            <div class="modal-footer">
+                <a id="linkDelete" href="#" class="btn btn-gradient-danger" data-dismiss="modal">Xóa</a>
+                <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* Modal xem ảnh user trong bảng *@
+<div class="modal fade" id="editAvatarModal" tabindex="-1" role="dialog" aria-labelledby="editAvatarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editAvatarModalLabel">Avatar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="image-container">
+                    <img alt="Avatar" class="img-fluid" id="img-user">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/Student.js"></script>
+}

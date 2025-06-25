@@ -1,0 +1,57 @@
+﻿@{
+    ViewBag.Title = "Lịch học";
+    ViewBag.Active = "RegisterClass";
+    var fullname = Context.Session.GetString("Fullname");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Table.css" />
+    <link rel="stylesheet" href="~/css/Register.css" />
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12 grid-margin">
+        <h2 class="text-primary text-center p-2 rounded">Lớp học phần @fullname</h2>
+        @if (DateTime.Now >= RegisterScheduleModelStatic.RegisterStart && DateTime.Now <= RegisterScheduleModelStatic.RegisterDeadline)
+        {
+            <a href="@Url.Action("AddRegister", "RegisterClass")" class="btn btn-info p-3 my-2 mr-3">Đăng ký lớp học phần</a>
+        }
+        <div style="margin: 10px 0">
+            <span style="font-size: 20px; font-family: auto;">
+                <strong>Lưu ý:</strong> Thời gian đăng ký lớp học bắt đầu ngày
+                <strong> @RegisterScheduleModelStatic.RegisterStart?.ToShortDateString() </strong>
+                và kết thúc ngày
+                <strong> @RegisterScheduleModelStatic.RegisterDeadline?.ToShortDateString() </strong>
+                sinh viên không đăng ký lớp sẽ được sắp lớp ngẫu nhiên theo kế hoạch của sinh viên
+            </span>
+        </div>
+        <div id="content">
+            @*Dữ liệu được thêm vào đây*@
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="editAvatarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirm">Xác nhận xóa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc muốn xóa
+            </div>
+            <div class="modal-footer">
+                <a id="linkDelete" href="#" class="btn btn-gradient-danger" data-dismiss="modal">Xóa</a>
+                <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/RegisterClass.js"></script>
+}

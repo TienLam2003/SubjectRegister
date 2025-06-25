@@ -1,0 +1,102 @@
+﻿@model StudentModel
+@{
+    ViewBag.Title = "Thông tin sinh viên";
+}
+
+@section Styles {
+    <style>
+        .avatar {
+            object-fit: cover;
+            width: 8rem;
+            height: 8rem;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.4);
+        }
+
+        .edit-icon {
+            cursor: pointer;
+        }
+    </style>
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="form-avatar text-center mb-3">
+                    <img src="@Model.ImagePath" alt="" class="avatar rounded-circle" data-toggle="modal" data-target="#avatarModalOfUser">
+                </div>
+                <form id="update-form" class="form-sample" enctype="multipart/form-data">
+                    <p class="card-description"></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="StudentCode" class="col-sm-3 col-form-label">Mã sinh viên:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="StudentCode" class="form-control" name="StudentCode" value="@Model.StudentCode" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="Fullname" class="col-sm-3 col-form-label">Họ tên:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="Fullname" class="form-control" name="Fullname" value="@Model.Fullname" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="class" class="col-sm-3 col-form-label">Lớp:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="class" class="form-control" name="Class" value="@Model.Class" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="YearOfBirth" class="col-sm-3 col-form-label">Ngày sinh:</label>
+                                <div class="col-sm-9">
+                                    <input type="date" id="YearOfBirth" class="form-control" name="YearOfBirth" value="@Model.YearOfBirth.ToString("yyyy-MM-dd")" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="Gender" class="col-sm-3 col-form-label">Giới tính:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="Phone" class="form-control" name="Phone" value="@Model.GenderStr" readonly />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="Phone" class="col-sm-3 col-form-label">Số điện thoại:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="Phone" class="form-control" name="Phone" value="@Model.Phone" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="Department" class="col-sm-3 col-form-label">Khoa:</label>
+                                <div class="col-sm-9">
+                                    <input type="text" id="Phone" class="form-control" name="Phone" value="@Model.DepartmentCode" readonly />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

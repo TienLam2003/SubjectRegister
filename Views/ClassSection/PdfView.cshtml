@@ -1,0 +1,92 @@
+﻿@model List<SubjectRegister.ViewModels.StudentListPdfViewModel>
+@{
+    Layout = null;
+    var classInfo = Model.FirstOrDefault();
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Danh Sách Sinh Viên</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            text-align: center;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #343a40;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+
+        .table-bordered th, .table-bordered td {
+            border: 1px solid #dee2e6 !important;
+        }
+
+        .info-section {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Danh sách sinh viên</h1>
+        <div class="info-section">
+            <p><strong>Giảng viên giảng dạy:</strong> @classInfo.TeacherName</p>
+            <p><strong>Môn học:</strong> @classInfo.SubjectName</p>
+            <p><strong>Lịch học trong tuần:</strong> @classInfo.StudySchedule</p>
+            <p><strong>Số lượng sinh viên:</strong> @Model.Count</p>
+        </div>
+        <table class="table table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Mã sinh viên</th>
+                    <th>Họ tên</th>
+                    <th>Lớp</th>
+                    <th>Năm sinh</th>
+                    <th>Giới tính</th>
+                    <th>SĐT</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var student in Model)
+                {
+                    <tr>
+                        <td>@student.StudentCode</td>
+                        <td>@student.Fullname</td>
+                        <td>@student.Class</td>
+                        <td>@student.YearOfBirth.ToString("dd/MM/yyyy")</td>
+                        <td>@student.GenderStr</td>
+                        <td>@student.Phone</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

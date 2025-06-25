@@ -1,0 +1,60 @@
+﻿
+@{
+    ViewBag.Title = "Kế hoạch học tập";
+    ViewBag.Active = "StudyPlan";
+    var fullname = Context.Session.GetString("Fullname");
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Table.css" />
+    <link rel="stylesheet" href="~/css/Register.css" />
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12 grid-margin">
+        <h2 class="text-primary text-center p-2 rounded">Kế hoạch học tập của @fullname</h2>
+        @if (DateTime.Now >= PlanScheduleModelStatic.PlanStart && DateTime.Now <= PlanScheduleModelStatic.PlanDeadline)
+        {
+            <a href="@Url.Action("Add", "StudyPlan")" class="btn btn-info p-3 my-2 mr-3">Thêm kế hoạch</a>
+        }
+        <div style="margin: 10px 0">
+            <span style="font-size: 20px; font-family: auto;">
+                <strong>Lưu ý:</strong> Thời gian lập kế hoạch bắt đầu ngày
+                <strong>@PlanScheduleModelStatic.PlanStart?.ToShortDateString()</strong>
+                và kết thúc ngày
+                <strong>@PlanScheduleModelStatic.PlanDeadline?.ToShortDateString()</strong>
+                sinh viên không lập kế hoạch sẽ không được đăng ký lớp học phần
+            </span>
+        </div>
+        <div id="content">
+            @*Dữ liệu được thêm vào đây*@
+        </div>
+    </div>
+</div>
+
+@* Modal xác nhận xóa trong bảng *@
+<div class="modal fade" id="deleteConfirm" tabindex="-1" role="dialog" aria-labelledby="editAvatarModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirm">Xác nhận xóa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Bạn có chắc muốn xóa mã <strong id="code"></strong></p>
+            </div>
+            <div class="modal-footer">
+                <a id="linkDelete" href="#" class="btn btn-gradient-danger" data-dismiss="modal">Xóa</a>
+                <button type="button" class="btn btn-gradient-dark" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="~/js/StudyPlan.js"></script>
+}

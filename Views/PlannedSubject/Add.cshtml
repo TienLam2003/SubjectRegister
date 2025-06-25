@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "Thêm môn học dự kiến mở";
+    ViewBag.Active = "PlannedSubject";
+}
+
+@section Styles{
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+}
+
+<div id="modal-content"></div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="text-primary text-center p-2 rounded">Thêm kế hoạch</h2>
+                <form id="add-form" method="post" class="form-sample">
+                    <p class="card-description"></p>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="Fullname" class="col-sm-3 col-form-label">Học kỳ:</label>
+                                <div class="col-sm-9">
+                                    <select id="SemesterCode" name="SemesterCode" class="js-example-responsive" style="width: 100%; margin: 10px">
+                                        @foreach (var item in ViewBag.Semester)
+                                        {
+                                            <option value="@item.SemesterCode">@item.SemesterName</option>
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group row">
+                                <label for="SubjectCode" class="col-sm-3 col-form-label">Tên môn học:</label>
+                                <div class="col-sm-9">
+                                    <select id="SubjectCode" name="SubjectCode" class="js-example-responsive" style="width: 100%; margin: 10px">
+                                        
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-gradient-primary mr-2">Thêm</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#SubjectCode').select2();
+            $('#SemesterCode').select2();
+            GetDepartmentsWithSubjects();
+
+            $('#SemesterCode').on('change', function () {
+                GetDepartmentsWithSubjects();
+            });
+
+            function GetDepartmentsWithSubjects() {
+                let semesterCode = $('#SemesterCode').val();
+                $.ajax({
+                    url: '/PlannedSubject/GetDepartmentsWithSubjects',
+                    data: {semesterCode},
+                    method: 'GET',
+                    cache: false,
+                    success: function (data) {
+                        $('#SubjectCode').empty();
+                        // Khởi tạo Select2 với dữ liệu trả về
+                        $('#SubjectCode').select2({
+                            data: data,
+                            placeholder: "Chọn môn học"
+                        });
+                    },
+                    error: function () {
+                        alert('Không thể tải dữ liệu');
+                    }
+                });
+            }
+
+            $('#add-form').on('submit', function (event) {
+                event.preventDefault(); // Ngăn không cho form load lại trang
+                var formData = new FormData(this); // Sử dụng FormData để bao gồm cả file
+
+                $.ajax({
+                    url: '@Url.Action("Add", "PlannedSubject")',
+                    type: 'POST',
+                    data: formData, // Lấy tất cả dữ liệu trong form
+                    processData: false, // Ngăn jQuery xử lý dữ liệu (cần thiết khi dùng FormData)
+                    contentType: false, // Không đặt Content-Type để trình duyệt tự xử lý
+                    success: function (response) {
+                        if (response.result) {
+                            GetDepartmentsWithSubjects();
+                        }
+                        $('#modal-content').html(response.modal);
+                        // Tạo đối tượng modal và hiển thị
+                        var myModal = new bootstrap.Modal(document.getElementById('modal-content').querySelector('.modal'));
+                        myModal.show();
+                    }
+                });
+            });
+        });
+    </script>
+}

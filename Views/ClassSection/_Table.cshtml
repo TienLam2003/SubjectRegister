@@ -1,0 +1,49 @@
+﻿@using SubjectRegister.Common;
+@model List<ClassSectionModel>
+
+<div class="card">
+    <div class="table-responsive table-scroll">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Mã lớp học</th>
+                    <th>Môn học</th>
+                    <th>Giảng viên giảng dạy</th>
+                    <th>Lịch học trong tuần</th>
+                    <th>Phòng học</th>
+                    <th>Số lượng tối đa</th>
+                    <th>Số lượng đã đăng ký</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr class="detail">
+                        <td class="edit-column">@item.ClassCode</td>
+                        <td class="edit-column">@item.SubjectName</td>
+                        <td class="edit-column">@item.TeacherName</td> @* Tên giảng viên *@
+                        <td class="edit-column">@item.StudySchedule</td>
+                        <td class="edit-column">@(item.ClassroomCode ?? "Chưa có")</td>
+                        <td class="edit-column">@item.MaxQuantity</td>
+                        <td class="edit-column">@item.RegisteredCount</td>
+                        <td>
+                            <a class="nav-link p-0" id="profileDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                                <i class="mdi mdi-dots-vertical mdi-24px"></i> <!-- Icon ba chấm dọc -->
+                            </a>
+                            <div class="dropdown-menu navbar-dropdown" aria-labelledby="profileDropdown">
+                                <a class="dropdown-item item-hidden" href="@Url.Action("StudentListByClass", "ClassSection", new {classCode = item.ClassCode})">
+                                    <i class="mdi mdi-account-card-details mr-3 text-info"></i> Danh sách viên của lớp
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item item-hidden showModalDeleteConfirm" href="#" data-code="@item.PlannedCode">
+                                    <i class="mdi mdi-logout mr-3 text-danger"></i> Xóa
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
